@@ -1,0 +1,2 @@
+-- Los datos de demo se cargan con DataSeeder (usuarios, cursos, estudiantes, matrículas).
+-- Este archivo se mantiene vacío a propósito para evitar conflictos de unicidad al reiniciar MySQL.

@@ -1,0 +1,142 @@
+:root {
+  --bg: #f4f6f8;
+  --card: #ffffff;
+  --primary: #1f4b99;
+  --danger: #b42318;
+  --border: #d0d7de;
+  --text: #24292f;
+  --muted: #57606a;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+header, .card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.25rem;
+  margin-bottom: 1rem;
+}
+
+main, .login-wrap {
+  max-width: 1100px;
+  margin: 1.5rem auto;
+  padding: 0 1rem;
+}
+
+.login-wrap {
+  max-width: 420px;
+}
+
+h1, h2 { margin: 0 0 0.75rem; }
+
+.muted { color: var(--muted); font-size: 0.9rem; }
+
+.card { padding: 1.25rem; margin-bottom: 1rem; }
+
+label {
+  display: block;
+  margin: 0.6rem 0 0.25rem;
+  font-size: 0.9rem;
+}
+
+input, select, textarea, button {
+  font: inherit;
+}
+
+input, select, textarea {
+  width: 100%;
+  padding: 0.55rem 0.7rem;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: #fff;
+}
+
+button, .btn {
+  border: none;
+  border-radius: 6px;
+  padding: 0.55rem 0.9rem;
+  background: var(--primary);
+  color: #fff;
+  cursor: pointer;
+}
+
+button.secondary { background: #6e7781; }
+button.danger { background: var(--danger); }
+button:disabled { opacity: 0.55; cursor: not-allowed; }
+
+.tabs {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+
+.tabs button {
+  background: #eaeef2;
+  color: var(--text);
+}
+
+.tabs button.active {
+  background: var(--primary);
+  color: #fff;
+}
+
+.grid-2 {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 1rem;
+}
+
+@media (max-width: 800px) {
+  .grid-2 { grid-template-columns: 1fr; }
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.92rem;
+}
+
+th, td {
+  border-bottom: 1px solid var(--border);
+  padding: 0.55rem 0.4rem;
+  text-align: left;
+  vertical-align: top;
+}
+
+th { font-size: 0.85rem; color: var(--muted); }
+
+.actions { display: flex; gap: 0.35rem; flex-wrap: wrap; }
+
+.msg {
+  margin: 0.75rem 0;
+  padding: 0.7rem 0.85rem;
+  border-radius: 6px;
+  display: none;
+}
+
+.msg.show { display: block; }
+.msg.error { background: #ffebe9; color: #82071e; border: 1px solid #ffcecb; }
+.msg.ok { background: #ddfbe6; color: #0f5132; border: 1px solid #b7ebd0; }
+
+.hidden { display: none !important; }
+
+.form-actions {
+  margin-top: 0.9rem;
+  display: flex;
+  gap: 0.5rem;
+}

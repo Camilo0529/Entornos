@@ -1,0 +1,23 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:demoacademico;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: false
+    defer-datasource-initialization: true
+
+  sql:
+    init:
+      mode: never
+
+app:
+  seed:
+    enabled: false
+  jwt:
+    secret: test-jwt-secret-clave-minimo-treinta-dos-caracteres
+    expiration-ms: 86400000
