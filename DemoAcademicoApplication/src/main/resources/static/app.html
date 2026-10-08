@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Panel - Demo Académico</title>
+  <link rel="stylesheet" href="/css/estilos.css">
+</head>
+<body>
+  <main>
+    <header>
+      <div>
+        <h1>Sistema de Matrículas</h1>
+        <p class="muted" id="userInfo"></p>
+      </div>
+      <button id="btnLogout" class="secondary">Cerrar sesión</button>
+    </header>
+
+    <div id="msg" class="msg"></div>
+
+    <div class="tabs">
+      <button class="tab active" data-tab="estudiantes">Estudiantes</button>
+      <button class="tab" data-tab="cursos">Cursos</button>
+      <button class="tab" data-tab="matriculas">Matrículas</button>
+      <button class="tab" data-tab="usuarios">Usuarios</button>
+    </div>
+
+    <section id="tab-estudiantes" class="panel">
+      <div class="grid-2">
+        <div class="card">
+          <h2>Listado</h2>
+          <div id="estudiantesTable"></div>
+        </div>
+        <div class="card admin-only">
+          <h2 id="estFormTitle">Nuevo estudiante</h2>
+          <form id="estForm">
+            <input type="hidden" id="estId">
+            <label>Nombre</label>
+            <input id="estNombre" required>
+            <label>Apellido</label>
+            <input id="estApellido" required>
+            <label>Email</label>
+            <input id="estEmail" type="email" required>
+            <div class="form-actions">
+              <button type="submit">Guardar</button>
+              <button type="button" class="secondary" id="estCancel">Cancelar</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <section id="tab-cursos" class="panel hidden">
+      <div class="grid-2">
+        <div class="card">
+          <h2>Listado</h2>
+          <div id="cursosTable"></div>
+        </div>
+        <div class="card admin-only">
+          <h2 id="cursoFormTitle">Nuevo curso</h2>
+          <form id="cursoForm">
+            <input type="hidden" id="cursoId">
+            <label>Código</label>
+            <input id="cursoCodigo" required>
+            <label>Nombre</label>
+            <input id="cursoNombre" required>
+            <label>Descripción</label>
+            <textarea id="cursoDescripcion" rows="3"></textarea>
+            <label>Créditos</label>
+            <input id="cursoCreditos" type="number" min="1" required>
+            <div class="form-actions">
+              <button type="submit">Guardar</button>
+              <button type="button" class="secondary" id="cursoCancel">Cancelar</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <section id="tab-matriculas" class="panel hidden">
+      <div class="grid-2">
+        <div class="card">
+          <h2>Listado</h2>
+          <div id="matriculasTable"></div>
+        </div>
+        <div class="card admin-only">
+          <h2>Nueva matrícula</h2>
+          <form id="matForm">
+            <label>Estudiante</label>
+            <select id="matEstudiante" required></select>
+            <label>Curso</label>
+            <select id="matCurso" required></select>
+            <div class="form-actions">
+              <button type="submit">Matricular</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <section id="tab-usuarios" class="panel hidden">
+      <div class="grid-2">
+        <div class="card">
+          <h2>Listado</h2>
+          <div id="usuariosTable"></div>
+        </div>
+        <div class="card admin-only">
+          <h2 id="usrFormTitle">Nuevo usuario</h2>
+          <form id="usrForm">
+            <input type="hidden" id="usrId">
+            <label>Username</label>
+            <input id="usrUsername" required>
+            <label>Email</label>
+            <input id="usrEmail" type="email" required>
+            <label>Contraseña <span class="muted">(vacío = no cambiar en edición)</span></label>
+            <input id="usrPassword" type="password">
+            <label>Rol</label>
+            <select id="usrRol" required>
+              <option value="ADMIN">ADMIN</option>
+              <option value="DOCENTE">DOCENTE</option>
+              <option value="ESTUDIANTE">ESTUDIANTE</option>
+            </select>
+            <label>Activo</label>
+            <select id="usrActivo">
+              <option value="true">Sí</option>
+              <option value="false">No</option>
+            </select>
+            <div class="form-actions">
+              <button type="submit">Guardar</button>
+              <button type="button" class="secondary" id="usrCancel">Cancelar</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script type="module" src="/js/app.js"></script>
+</body>
+</html>
