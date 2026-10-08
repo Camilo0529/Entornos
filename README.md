@@ -1,13 +1,11 @@
 # Demo Académico — Matrículas con JWT
 
-Aplicación monolítica Spring Boot (Java 21) para el curso de Ingeniería de Software III.
+Aplicación monolítica Spring Boot.
 Incluye autenticación JWT, cuatro CRUDs (Estudiantes, Cursos, Matrículas, Usuarios) y un frontend HTML/CSS/JS simple.
 
 ## Integrantes
 
-* 2225112 — Andres Felipe Martinez Ortiz
 * 2190187 — Camilo Andrés Carvajal Castro
-* 2212938 — Santiago Galvis Saavedra
 
 ## Stack
 
@@ -41,7 +39,6 @@ docker run --name demo-mysql -e MYSQL_DATABASE=demoacademico \
 | `MYSQL_PASSWORD` | `demo` |
 | `JWT_SECRET` | clave de desarrollo (mín. 32 caracteres) |
 
-No uses secretos reales en el repositorio. En producción/demo compartida define `JWT_SECRET` por entorno.
 
 ## Ejecutar la aplicación
 
@@ -77,6 +74,104 @@ Las contraseñas se almacenan con BCrypt. Son solo de demo académica.
 
 El token se guarda en `sessionStorage` para la demo: se limpia al cerrar la pestaña y reduce la persistencia. No es una afirmación de seguridad absoluta (XSS sigue siendo un riesgo a mitigar con buenas prácticas).
 
+## Modelo de datos (UML)
+
+Diseño actual de la base de datos según las entidades JPA (`estudiante`, `curso`, `matricula`, `usuario`). Los enums se persisten como `STRING`.
+
+```mermaid
+erDiagram
+    ESTUDIANTE ||--o{ MATRICULA : "tiene"
+    CURSO ||--o{ MATRICULA : "incluye"
+
+    ESTUDIANTE {
+        Long id PK
+        String nombre "NOT NULL"
+        String apellido "NOT NULL"
+        String email UK "NOT NULL"
+    }
+
+    CURSO {
+        Long id PK
+        String codigo UK "NOT NULL"
+        String nombre "NOT NULL"
+        String descripcion "nullable, max 500"
+        Integer creditos "NOT NULL, > 0"
+    }
+
+    MATRICULA {
+        Long id PK
+        Long estudiante_id FK "NOT NULL"
+        Long curso_id FK "NOT NULL"
+        EstadoMatricula estado "ACTIVA | ANULADA"
+        LocalDateTime fechaMatricula "NOT NULL"
+    }
+
+    USUARIO {
+        Long id PK
+        String username UK "NOT NULL"
+        String email UK "NOT NULL"
+        String passwordHash "NOT NULL, BCrypt"
+        Rol rol "ADMIN | DOCENTE | ESTUDIANTE"
+        boolean activo "NOT NULL, default true"
+    }
+```
+
+```mermaid
+classDiagram
+    class Estudiante {
+        -Long id
+        -String nombre
+        -String apellido
+        -String email
+    }
+
+    class Curso {
+        -Long id
+        -String codigo
+        -String nombre
+        -String descripcion
+        -Integer creditos
+    }
+
+    class Matricula {
+        -Long id
+        -EstadoMatricula estado
+        -LocalDateTime fechaMatricula
+    }
+
+    class Usuario {
+        -Long id
+        -String username
+        -String email
+        -String passwordHash
+        -Rol rol
+        -boolean activo
+    }
+
+    class EstadoMatricula {
+        <<enumeration>>
+        ACTIVA
+        ANULADA
+    }
+
+    class Rol {
+        <<enumeration>>
+        ADMIN
+        DOCENTE
+        ESTUDIANTE
+    }
+
+    Estudiante "1" --> "*" Matricula : estudiante
+    Curso "1" --> "*" Matricula : curso
+    Matricula --> EstadoMatricula : estado
+    Usuario --> Rol : rol
+```
+
+Notas:
+* `Usuario` es independiente de `Estudiante` (no hay FK entre ellos).
+* La baja de una matrícula es lógica: `estado = ANULADA`.
+* Unicidades: `estudiante.email`, `curso.codigo`, `usuario.username`, `usuario.email`.
+
 ## Endpoints principales
 
 ### Estudiantes — `/api/estudiantes`
@@ -92,25 +187,7 @@ La baja es **anulación lógica** (`estado = ANULADA`), no borrado físico.
 ### Usuarios — `/api/usuarios`
 `GET`, `GET /{id}`, `POST`, `PUT /{id}`, `DELETE /{id}`  
 Las respuestas **nunca** incluyen el hash de contraseña.
-
-## Recorrido de demostración
-
-1. Abrir http://localhost:8080/ e iniciar sesión con `admin` / `admin123`.
-2. Probar credenciales inválidas: debe mostrarse un mensaje claro sin detalles sensibles.
-3. En el panel, crear/listar/editar/eliminar un estudiante, un curso y un usuario.
-4. Crear una matrícula y luego anularla; el registro permanece con estado `ANULADA`.
-5. Cerrar sesión e iniciar con `docente` / `docente123`: puede listar, pero las escrituras fallan con `403`.
-6. Llamar a un endpoint API sin token (p. ej. con curl) y verificar `401`.
-
-```bash
-# Sin token → 401
-curl -i http://localhost:8080/api/estudiantes
-
-# Login
-curl -s -X POST http://localhost:8080/api/auth/login \
-  -H 'Content-Type: application/json' \
-  -d '{"username":"admin","password":"admin123"}'
-```
+  
 
 ## Pruebas
 
