@@ -78,43 +78,6 @@ El token se guarda en `sessionStorage` para la demo: se limpia al cerrar la pest
 
 Diseño actual de la base de datos según las entidades JPA (`estudiante`, `curso`, `matricula`, `usuario`). Los enums se persisten como `STRING`.
 
-```mermaid
-erDiagram
-    ESTUDIANTE ||--o{ MATRICULA : "tiene"
-    CURSO ||--o{ MATRICULA : "incluye"
-
-    ESTUDIANTE {
-        Long id PK
-        String nombre "NOT NULL"
-        String apellido "NOT NULL"
-        String email UK "NOT NULL"
-    }
-
-    CURSO {
-        Long id PK
-        String codigo UK "NOT NULL"
-        String nombre "NOT NULL"
-        String descripcion "nullable, max 500"
-        Integer creditos "NOT NULL, > 0"
-    }
-
-    MATRICULA {
-        Long id PK
-        Long estudiante_id FK "NOT NULL"
-        Long curso_id FK "NOT NULL"
-        EstadoMatricula estado "ACTIVA | ANULADA"
-        LocalDateTime fechaMatricula "NOT NULL"
-    }
-
-    USUARIO {
-        Long id PK
-        String username UK "NOT NULL"
-        String email UK "NOT NULL"
-        String passwordHash "NOT NULL, BCrypt"
-        Rol rol "ADMIN | DOCENTE | ESTUDIANTE"
-        boolean activo "NOT NULL, default true"
-    }
-```
 
 ```mermaid
 classDiagram
